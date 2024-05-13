@@ -258,14 +258,14 @@ def get_relations(key):
       ANY v._id
       GRAPH "relations"
       FILTER related_e.relation == "family"
-      RETURN MERGE(related_v, { relation: related_e.relation })
+      RETURN DISTINCT MERGE(related_v, { relation: related_e.relation })
   )
   LET friends = (
     FOR related_v, related_e IN 1..1
       ANY v._id
       GRAPH "relations"
       FILTER related_e.relation == "friends"
-      RETURN MERGE(related_v, { relation: related_e.relation })
+      RETURN DISTINCT MERGE(related_v, { relation: related_e.relation })
   )
   RETURN MERGE(data, { family: family, friends: friends })
   """
