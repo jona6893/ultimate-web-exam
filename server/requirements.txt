@@ -1,0 +1,4 @@
+bottle == 0.12.25
+requests == 2.31.0
+paste == 3.5.3
+Faker == 0.7.4

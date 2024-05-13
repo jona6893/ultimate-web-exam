@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.map-card-transform{
+  transform: translate(-50%, -100%);
+}
+
+/* overlay for dropdown menus to close them when clicking outside */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+}
+
+/*  */
+.comma + .comma::before {
+  content: ", ";
+}
+
+
+/** ---------- MAP PIN MARKER ---------- */
+
+.triangle {
+  clip-path: polygon(0 0, 50% 75%, 100% 0);
+  background-color: inherit;
+  border: inherit;
+  border-top: none;
+  position: absolute;
+  /* top: 94%; */
+}

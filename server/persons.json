@@ -1,0 +1,88 @@
+{
+  "suspects": [
+    {
+      "_key": "010299-7332",
+      "first_name": "Sine",
+      "last_name": "Lassen",
+      "age": 25,
+      "gender": "female",
+      "cpr": "010299-7332"
+    },
+    {
+      "_key": "240585-9824",
+      "first_name": "Victor",
+      "last_name": "Lassen",
+      "age": 38,
+      "gender": "male",
+      "cpr": "240585-9824"
+    },
+    {
+      "_key": "220982-5989",
+      "first_name": "Søs",
+      "last_name": "Lassen", 
+      "age": 41,
+      "gender": "female",
+      "cpr": "220982-5989"
+    }
+  ],
+  "victims": [
+    {
+      "_key": "170496-6691",
+      "first_name": "Christian",
+      "last_name": "Paulsen",
+      "age": 28,
+      "gender": "male",
+      "cpr": "170496-6691"
+    },
+    {
+      "_key": "010585-5943",
+      "first_name": "Marcus ",
+      "last_name": "Schultz",
+      "age": 38,
+      "gender": "male",
+      "cpr": "010585-5943"
+    },
+    {
+      "_key": "200400-7540",
+      "first_name": "Marie",
+      "last_name": "Kjær",
+      "age": 24,
+      "gender": "female",
+      "cpr": "200400-7540"
+    }
+  ],
+  "witnesses": [
+    {
+      "_key": "190603-4588",
+      "first_name": "Kim",
+      "last_name": "Krogh",
+      "age": 20,
+      "gender": "male",
+      "cpr": "190603-4588"
+    },
+    {
+      "_key": "170965-2785",
+      "first_name": "Nora",
+      "last_name": "Krogh",
+      "age": 58,
+      "gender": "female",
+      "cpr": "170965-2785"
+    },
+    {
+      "_key": "231178-2340",
+      "first_name": "Ronja",
+      "last_name": "Søndergaard",
+      "age": 45,
+      "gender": "female",
+      "cpr": "231178-2340"
+    },
+    {
+      "_key": "050105-6665",
+      "name": "Dan",
+      "last_name": "Winther",
+      "age": 19,
+      "gender": "male",
+      "cpr": "050105-6665"
+    }
+  ]
+}

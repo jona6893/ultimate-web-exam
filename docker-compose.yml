@@ -1,0 +1,47 @@
+version: "3.1"
+services:
+
+  arangodb:
+    image: arangodb:3.11.3
+    container_name: arangodb_docker_container
+    restart: always
+    ports:
+      - 8529:8529
+    environment:
+      - ARANGO_NO_AUTH=1
+    volumes:
+      - ./server/arangodb:/var/lib/arangodb3
+    networks:
+      - uw_docker_network
+
+  bottle:
+    environment:
+      - PYTHONUNBUFFERED=1
+    image: bottle-app:latest
+    container_name: bottle_docker_container
+    ports:
+      - 4000:4000
+    volumes:
+      - ./server:/app/server
+    networks:
+      - uw_docker_network
+    depends_on:
+      - arangodb
+
+  vite:
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    image: vite-app:latest
+    container_name: vite_docker_container
+    ports:
+      - 8080:8080
+    volumes:
+      - ./client:/app/client
+      - /app/client/node_modules
+    networks:
+      - uw_docker_network
+    depends_on:
+      - bottle
+
+networks:
+  uw_docker_network:
