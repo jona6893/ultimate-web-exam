@@ -2,13 +2,12 @@ import { useState } from "react";
 import Crime from "../../entities/Crime";
 import useCrimeStore from "../../stores/crimeStore.ts";
 import Dropdown from "./Dropdown.tsx";
+import { SortValues } from "../../entities/SortValues.ts";
 
-interface Props {
-  selectedSort: string,
-  setSelectedSort: (sort: string) => void
-}
 
-function SortMenu({ selectedSort, setSelectedSort }: Props) {
+
+function SortMenu() {
+   const [selectedSort, setSelectedSort] = useState<SortValues>("Date Ascending")
   const {filteredCrimes, setFilteredCrimes } = useCrimeStore();
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
