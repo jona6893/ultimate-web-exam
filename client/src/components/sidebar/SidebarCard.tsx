@@ -10,6 +10,7 @@ function SidebarCard({ crime}: Props) {
   const [colorClass, setColorClass] = useState<string>("");
   const {tglMapCard, setTglMapCard} = useMapStore();
 
+  
   // Expand the card to show more details
   function handleExpand(crimeKey: string) {
     //console.log("tglmapcard", tglMapCard)

@@ -47,7 +47,7 @@ class ArangoDB:
 
 # instantiate the ArangoDB class
 db = ArangoDB()
-  
+
 ##############################
 """
 user endpoints (example)
@@ -65,7 +65,7 @@ def get_one_user(id):
     return { "id": id }
   except ValueError:
     return { "error": "Invalid ID" }
-  
+
 ##############################
 
 @get("/")
@@ -83,54 +83,58 @@ def index():
 @get("/crimes-server")
 def get_crime():
 
-  # fetch crimes from pythonanywwhere
-  def get_data():
-    try:
-      url = "https://jona6893.pythonanywhere.com/crimes-server"
-      headers = {"token": "secret"}
-      res = requests.get(url, headers=headers)
-      
-      res.raise_for_status()
-      data = res.json()
+    # fetch crimes from pythonanywwhere
+    def get_data():
+        try:
+            url = "https://jona6893.pythonanywhere.com/crimes-server"
+            headers = {"token": "2963cdf9-85f2-4102-86e8-eb6548a803a8"}
+            res = requests.get(url, headers=headers)
 
-      # Add key Address
-      lon = data.get("lon")
-      lat = data.get("lat")
-      address = get_address(lon, lat, "pk.eyJ1IjoiaGVsYm9iIiwiYSI6ImNsdGVkdWQxbzBmaWgya212OW40bTV3cHUifQ.xYokffDfUCRs-p454SCz7g")
-      data["address"] = address
-      return data
-    except requests.exceptions.RequestException as e:
-      return {"error": e}
-    
-  crime = get_data()
+            res.raise_for_status()
+            data = res.json()
+
+            # Add key Address
+            lon = data.get("lon")
+            lat = data.get("lat")
+            address = get_address(
+                lon,
+                lat,
+                "pk.eyJ1IjoiaGVsYm9iIiwiYSI6ImNsdGVkdWQxbzBmaWgya212OW40bTV3cHUifQ.xYokffDfUCRs-p454SCz7g",
+            )
+            data["address"] = address
+            return data
+        except requests.exceptions.RequestException as e:
+            return {"error": e}
+
+    crime = get_data()
     # Create a new array called persons
-  persons_list = []
-   # Add suspects, victims, and witnesses to persons
-  persons_list.extend(crime["suspects"])
-  persons_list.extend(crime["victims"])
-  persons_list.extend(crime["witnesses"])
+    persons_list = []
+    # Add suspects, victims, and witnesses to persons
+    persons_list.extend(crime["suspects"])
+    persons_list.extend(crime["victims"])
+    persons_list.extend(crime["witnesses"])
 
-  # get a random person from the persons list
-  def get_random_person():
-    random_person = random.choice(persons_list)
-    return random_person["_key"]
+    # get a random person from the persons list
+    def get_random_person():
+        random_person = random.choice(persons_list)
+        return random_person["_key"]
 
-  from_person = get_random_person()
-  to_person = get_random_person()
-
-  # reassign to_person if it is the same as from_person
-  while from_person == to_person:
+    from_person = get_random_person()
     to_person = get_random_person()
 
-  #chose a random relationship
-  relationship = random.choice(["family", "friends"])
+    # reassign to_person if it is the same as from_person
+    while from_person == to_person:
+        to_person = get_random_person()
 
-  collections = {
+    # chose a random relationship
+    relationship = random.choice(["family", "friends"])
+
+    collections = {
     "read": ["persons"],
     "write": ["persons_related_to_persons", "persons", "crimes"]
   }
 
-  action = f"""
+    action = f"""
   // Insert new Crime in the crimes collection
   const crime = db.crimes.save({crime}, {{ overwrite: true }});
   
@@ -141,16 +145,19 @@ def get_crime():
   // Loop through the personsList and insert each person into the persons collection
   for (const person of personsList) {{
     const newPerson = db.persons.save(person, {{ overwrite: true }});
+    // Push added person to the insertedPersons array
     insertedPersons.push(newPerson);
   }}
 
   // Validate if a reverse relationship already exists
   function validateEdge(newEdge) {{
+    // Check if the reverse relation already exists
     const existingEdges = db.persons_related_to_persons.edges({{
       _from: newEdge._to,
       _to: newEdge._from
     }});
 
+    // if the reverse relation already exists, throw an error - if existingEdges is greater than 0
     if (existingEdges.count() > 0) {{
       throw "Error: Reverse relation already exists.";
     }}
@@ -168,50 +175,9 @@ def get_crime():
   return {{crime, insertedPersons, relation}};
   """
 
-  data = db.transaction(collections, action)
+    data = db.transaction(collections, action)
 
-  return data
-  
-
-  # insert crimes into the database
-  query = """
-  INSERT @crime INTO crimes
-  OPTIONS { "overwrite": true }
-  RETURN NEW
-  """
-  bindVars = { "crime": crime }
-  
-  # Create a new array called persons
-  persons_list = []
-   # Add suspects, victims, and witnesses to persons
-  persons_list.extend(crime["suspects"])
-  persons_list.extend(crime["victims"])
-  persons_list.extend(crime["witnesses"])
-  
-
-  # ArangoDB query
-  persons_query = """
-  FOR person IN @persons_list
-  INSERT person INTO persons
-  OPTIONS { "overwrite": true }
-  RETURN NEW
-  """
-
-  # Bind parameters
-  bindVars_person = { "persons_list": persons_list }
-
-  # Execute the query
-  result = db.execute(persons_query, bindVars_person)
-
-  # Check the result
-  if "error" in result:
-    # Handle error
-    print("Error:", result["errorMessage"])
-  else:
-    # Success
-    print("Inserted persons successfully:", result)
-    
-  return db.execute(query, bindVars) # called other function to create relationships
+    return data
 ##############################
 
 
@@ -225,19 +191,6 @@ def get_all_crimes():
   RETURN crime
   """
 
-  crimes = db.execute(query)
-
-  return crimes
-
-@get("/api/get-crimes/relations")
-def get_all_realtions():
-  response.headers["Access-Control-Allow-Origin"] = "*"
-  response.headers["Content-Type"] = "application/json"
-
-  query = """
-  FOR edge IN persons_related_to_persons 
-  RETURN edge
-  """
   crimes = db.execute(query)
 
   return crimes
@@ -279,8 +232,7 @@ def test():
   response.headers["Access-Control-Allow-Origin"] = "*"
   return "x"
 
-  
-  
+
 ## from persons/240585-9824 , to persons/010299-7332 relation: family
 
 

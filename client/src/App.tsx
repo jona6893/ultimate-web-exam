@@ -26,12 +26,7 @@ function App() {
   // fecth data only once on component mount
   useEffect(() => {
     fetchData()
-  }, [])
-
-
-
-
-
+  },[]) // dont remove the empty array. It ensures the effect runs only once when the component mounts
 
 
   // when click appends in sidebar run function in map component by using function in app

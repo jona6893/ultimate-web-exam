@@ -1763,7 +1763,7 @@ class JSONPlugin(object):
         rv = callback(*a, **ka)
       except HTTPResponse:
         rv = _e()
-
+      # dicts, lists and custom objects. list is an array.
       if isinstance(rv, dict) or isinstance(rv, list):
         #Attempt to serialize, raises exception on failure
         json_response = dumps(rv)

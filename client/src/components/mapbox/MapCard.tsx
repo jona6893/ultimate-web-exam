@@ -31,7 +31,7 @@ function MapCard({crime}: Props){
 
 
   return (
-    <dialog open className="bg-primary text-secondary w-96 h-80 rounded-[10px] p-6 absolute inset-x-1/2 map-card-transform">
+    <dialog open className="bg-primary text-secondary w-96 h-auto rounded-[10px] p-6 absolute inset-x-1/2 map-card-transform">
       <button onClick={()=>setTglMapCard(null)} className="z-50 bg-primary text-white p-2 rounded-full absolute top-0 right-0 cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />

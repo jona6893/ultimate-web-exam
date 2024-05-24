@@ -8,22 +8,22 @@ import SortMenu from "./SortMenu.tsx";
 
 function Sidebar() {
   const [selectedFilter, setSelectedFilter] = useState<CrimeType>("All");
-
   const [viewportWidth, setViewportWidth] = useState<number>(window.innerWidth);
   const { crimes, filteredCrimes, setFilteredCrimes } = useCrimeStore();
   const [showSidebar, setShowSidebar] = useState<boolean>(false);
 
-  function handleFilter(category: CrimeType) {
-    setSelectedFilter(category);
-    if (category === "All") {
-      setFilteredCrimes(crimes);
-    } else {
-      const filteredCrimes = crimes.filter(
-        (crime) => crime.crime_type === category
-      );
-      setFilteredCrimes(filteredCrimes);
-    }
+function handleFilter(category: CrimeType) {
+  setSelectedFilter(category);
+  if (category === "All") {
+    setFilteredCrimes(crimes);
+  } else {
+    const filteredCrimes = crimes.filter(
+      (crime) => crime.crime_type === category
+    );
+    setFilteredCrimes(filteredCrimes);
   }
+}
+ 
 
   // Check if screen is resized and if mobile
   const handleResize = () => {
